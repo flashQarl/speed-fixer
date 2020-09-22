@@ -5,6 +5,7 @@ volatile unsigned long interruptTime = 0;
 unsigned long lastInterruptTime = 0;
 unsigned long previousInterruptTime = 0;
 
+unsigned long currentTime = 0;
 unsigned long pulseStartTime = 0;
 unsigned long pulseWidth = 0;
 
@@ -15,9 +16,11 @@ void setup() {
 }
 
 void loop() {
-  if(micros() > pulseStartTime + getCurrentPulseWidth()) {
-     value = !value;
-     digitalWrite(ECU_PIN_DIGITAL, value);
+  currentTime = micros();
+  if(currentTime > pulseStartTime + getCurrentPulseWidth()) {
+    pulseStartTime = currentTime;
+    value = !value;
+    digitalWrite(ECU_PIN_DIGITAL, value);
   }
 }
 
